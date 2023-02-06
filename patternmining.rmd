@@ -10,6 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 library(TraMineR)
 library(tidyverse)
+library(cluster)
 ```
 
 ```{r}
@@ -39,4 +40,8 @@ seqlegend(traminerSeq)
 
 ```{r}
 seqplot(traminerSeq, type = "f")
+```
+
+```{r}
+submat <- seqsubm(traminerSeq, method = "TRATE")
 ```
