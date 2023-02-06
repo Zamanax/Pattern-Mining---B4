@@ -1,0 +1,42 @@
+---
+title: "TraMineR"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(TraMineR)
+library(tidyverse)
+```
+
+```{r}
+tinderMessagesDf <- read.csv("Datasets/Sequential Data - Tinder messages/messages.db.csv")
+```
+
+Make a sequence for each conversationid made of each message.type
+
+```{r}
+tinderMessagesSeq <- tinderMessagesDf %>% 
+    group_by(conversationid) %>%
+    summarise(seq = paste(tail(message.type, 6), collapse = ","))
+traminerSeq <- seqdef(tinderMessagesSeq$seq, stsep = ",")
+```
+
+Visualize the sequences
+
+```{r}
+par(mfrow = c(2, 3))
+seqplot(traminerSeq, type = "i", with.legend = FALSE)
+seqplot(traminerSeq, type = "d", with.legend = FALSE)
+seqplot(traminerSeq, type = "ms", with.legend = FALSE)
+seqplot(traminerSeq, type = "mt", with.legend = FALSE)
+seqplot(traminerSeq, type = "pc", with.legend = FALSE)
+seqlegend(traminerSeq)
+```
+
+```{r}
+seqplot(traminerSeq, type = "f")
+```
