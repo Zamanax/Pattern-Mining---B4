@@ -44,4 +44,7 @@ seqplot(traminerSeq, type = "f")
 
 ```{r}
 submat <- seqsubm(traminerSeq, method = "TRATE")
+# Make a heatmap
+heatmap(submat, Rowv = NA, Colv = NA, )
+submat
 ```
