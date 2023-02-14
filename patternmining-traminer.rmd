@@ -1,6 +1,6 @@
 ---
 title: "TraMineR"
-output: github_document
+output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
@@ -29,6 +29,7 @@ traminerSeq <- seqdef(tinderMessagesSeq$seq, stsep = ",")
 Visualize the sequences
 
 ```{r}
+# Interesting to disable borders with border = NA too
 par(mfrow = c(2, 3))
 seqplot(traminerSeq, type = "i", with.legend = FALSE)
 seqplot(traminerSeq, type = "d", with.legend = FALSE)
@@ -39,7 +40,16 @@ seqlegend(traminerSeq)
 ```
 
 ```{r}
+# Do not run this with httgpd
+seqIplot(traminerSeq, sortv = "from.start")
+```
+
+```{r}
 seqplot(traminerSeq, type = "f")
+```
+
+```{r}
+heatmap(seqtrate(traminerSeq), )
 ```
 
 ```{r}
@@ -47,4 +57,22 @@ submat <- seqsubm(traminerSeq, method = "TRATE")
 # Make a heatmap
 heatmap(submat, Rowv = NA, Colv = NA, )
 submat
+```
+
+```{r}
+sampleSeq <- seqdef(sample(tinderMessagesSeq$seq, size = 2500), stsep = ",")
+```
+
+```{r}
+# Use traminer to cluster the sequences
+library(cluster)
+dist.om1 <- seqdist(sampleSeq, method = "OM", indel = 1, sm = "TRATE")
+clusterward1 <- agnes(dist.om1, diss = TRUE, method = "ward")
+# plot(clusterward1, which.plot = 2)
+cl1.4 <- cutree(clusterward1, k = 4)
+cl1.4fac <- factor(cl1.4, labels = paste("Type", 1:4))
+```
+
+```{r}
+seqIplot(sampleSeq, group = cl1.4fac, sortv = "from.start")
 ```
